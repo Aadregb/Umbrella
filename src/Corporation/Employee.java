@@ -36,8 +36,8 @@ public class Employee {
         } else  {
             this.salary = salary;
         }
-        if ((contractDate.isBefore(COMPANY_CREATION)) || (contractDate.isBefore(LocalDate.now())) || (ChronoUnit.YEARS.between(birthDate,LocalDate.now()) < 18)){
-            throw new DateBeforeCreationException("CONTRACT DATE IS BEFORE COMPANY CREATION DATE OR TODAY OR EMPLOYEE IS UNDER 18");
+        if ((contractDate.isBefore(COMPANY_CREATION)) || (contractDate.isAfter(LocalDate.now())) || (ChronoUnit.YEARS.between(birthDate,LocalDate.now()) < 18)){
+            throw new DateBeforeCreationException("CONTRACT DATE IS BEFORE COMPANY CREATION DATE / IS AFTER CURENT DATE / EMPLOYEE IS UNDER 18yo");
         } else {
             this.contractDate = contractDate;
         }
@@ -69,29 +69,37 @@ public class Employee {
     }
     @Override
     public String toString() {
-        return "Employee's Code:" + employeesCode + '\'' +
-                "DNI:" + dni +
-                "Name:" + name + '\'' +
-                "Surnames:" + surname + '\'' +
-                "Department:" + department + '\'' +
-                "Salary:" + salary +
-                "Contract Date:" + contractDate +
-                "BirthDate:" + birthDate +
-                "Antiquity:" + antiquity;
+        return "Employee's Code:" + employeesCode + "\n" +
+                "·DNI:" + dni.getNIF() + "\n" +
+                "·Name:" + name + "\n"  +
+                "·Surnames:" + surname + "\n"  +
+                "·Department:" + department + "\n"  +
+                "·Salary:" + salary + "\n" +
+                "·Contract Date:" + contractDate + "\n" +
+                "·BirthDate:" + birthDate + "\n" +
+                "·Antiquity:" + antiquity;
     }
     public String toStringV2() {
-        return "Employee`s Code:" + employeesCode + '\'' +
-                "Name:" + name + '\'' +
-                "Surnames:" + surname + '\'' +
-                "Department:" + department + '\'';
+        return "·Employee's Code:" + employeesCode + "\n" +
+                "·Name:" + name + "\n" +
+                "·Surnames:" + surname + "\n" +
+                "·Department:" + department + "\n";
     }
     public double monthlySalary () {
         if (LocalDate.now().getMonth().equals(birthDate.getMonth())){
-            return salary/12 + (antiquity*20) + foodRemuneration + 50;
+            return salary/12 + (antiquity*commitment) + foodRemuneration + 50;
         } else {
-            return salary/12 + (antiquity*20) + foodRemuneration;
+            return salary/12 + (antiquity*commitment) + foodRemuneration;
         }
     }
+    public String getEmployeesCode() {
+        return employeesCode;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
     public void raiseSalary (double percentage){
         if (percentage < 0){
             percentage *= -1;
